@@ -20,8 +20,8 @@ public class ClaveCursorAdaptador extends CursorAdapter {
     private static final String REGEX_DATOS_SMS = ".*(\\d{4}-\\d{4}-\\d{4}).*(\\d{12}).*(\\d{2}-[ENE,FEB,MAR,ABR,MAY,JUN,JUL,AGO,SEP,OCT,NOV,DIC]{3}).*";
 
 
-    public ClaveCursorAdaptador(Context context, Cursor c) {
-        super(context, c, 0);
+    public ClaveCursorAdaptador(Context context, String fecha) {
+        super(context, SmsFidegar.LeerSMS(context.getContentResolver(), fecha), 0);
     }
 
     //The newView is used to infalte a new view and return it,
