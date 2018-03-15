@@ -48,7 +48,6 @@ public class ClaveCursorAdaptador extends CursorAdapter {
         String smsBody =    cursor.getString(cursor.getColumnIndexOrThrow("body"));
 
         Date date = new Date(smsDate); //"MM/dd/yyyy").format(date);
-        String f = date.toLocaleString();
 
         boolean t = smsBody.matches(REGEX_DATOS_SMS);
         Pattern pattern = Pattern.compile(REGEX_DATOS_SMS);
@@ -57,7 +56,7 @@ public class ClaveCursorAdaptador extends CursorAdapter {
 
         String clave = matcher.group(1);
         String folio = matcher.group(2);
-        String fechaVen = f.substring(0,10) + ":"+ matcher.group(3);
+        String fechaVen = matcher.group(3);
 
         tvCons.setText(smsId);
         tvClave.setText(clave);

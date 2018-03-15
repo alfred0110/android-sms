@@ -1,0 +1,51 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:summary="Datos Generales"
+        android:title="General">
+
+        <!-- NOTE: EditTextPreference accepts EditText attributes. -->
+        <!-- NOTE: EditTextPreference's summary should be set to its value by the activity code. -->
+        <EditTextPreference
+            android:capitalize="words"
+            android:defaultValue="@string/pref_default_display_name"
+            android:inputType="textCapWords"
+            android:key="datoCelular"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_title_display_name" />
+
+        <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
+             dismiss it. -->
+        <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->
+        <ListPreference
+            android:defaultValue="-1"
+            android:entries="@array/pref_list_Connect_titles"
+            android:entryValues="@array/pref_list_Connect_values"
+            android:key="datoHabilitar"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"
+            android:title="@string/pref_title_Connect" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:summary="Datos Conexión"
+        android:title="Conexión">
+
+        <EditTextPreference
+            android:capitalize="words"
+            android:defaultValue="@string/pref_title_default_url"
+            android:inputType="textUri"
+            android:key="datoUrl"
+            android:maxLines="1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/pref_title_display_url"/>
+
+    </PreferenceCategory>
+
+
+
+</PreferenceScreen>

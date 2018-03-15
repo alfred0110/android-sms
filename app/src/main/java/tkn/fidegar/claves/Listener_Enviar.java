@@ -1,7 +1,9 @@
 package tkn.fidegar.claves;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +19,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,7 +49,10 @@ public class Listener_Enviar implements View.OnClickListener {
         JSONArray datosClaves = new JSONArray();
         final EditText etDate = (EditText)((AppCompatActivity)_context).findViewById(R.id.etDate);
 
-        Log.i(_tag,"Fecha Envio:" + etDate.getText().toString());
+        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(_context);
+        String pref_celular = pref.getString("datoCelular", "5544332211");
+        String pref_url = pref.getString("datoUrl", "http://www.tkinova.com/fidegarsms/sms/save");
+
         Cursor c = SmsFidegar.LeerSMS(_context.getContentResolver(), etDate.getText().toString() );
         while(c.moveToNext())
         {
@@ -62,13 +69,14 @@ public class Listener_Enviar implements View.OnClickListener {
             String fechaVen = matcher.group(3);
 
             SmsModel model =new SmsModel(clave, folio, fechaVen, fechaEnvio);
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
             JSONObject obj = new JSONObject();
             try {
                 obj.put("Clave",model.getClave());
                 obj.put("Folio",model.getFolio());
                 obj.put("FechaVigencia",model.getFechaVigencia());
-                obj.put("FechaEnvio",model.getFechaEnvio().toLocaleString());
+                obj.put("FechaEnvio", formatter.format(model.getFechaEnvio()));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -78,7 +86,9 @@ public class Listener_Enviar implements View.OnClickListener {
 
         JSONObject jsonBody = new JSONObject();
         try {
-            jsonBody.put("Celular", "1234567891");
+
+
+            jsonBody.put("Celular", pref_celular);
             jsonBody.put("Claves", datosClaves);
         }
         catch (JSONException ex)
@@ -87,8 +97,7 @@ public class Listener_Enviar implements View.OnClickListener {
         }
         Log.i(_tag,jsonBody.toString());
 
-        String url = "http://www.tkinova.com/fidegarsms/sms/save";
-        JsonObjectRequest jsonObjReq = new  JsonObjectRequest(url,jsonBody,
+        JsonObjectRequest jsonObjReq = new  JsonObjectRequest(pref_url,jsonBody,
                 new Response.Listener<JSONObject>(){
 
                     @Override
